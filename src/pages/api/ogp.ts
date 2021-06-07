@@ -2,8 +2,11 @@ import { Canvas, createCanvas, loadImage, registerFont } from 'canvas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import path from 'path'
 
-/*
- *
+/**
+ * タイトルテキストの行数調整
+ * @param Canvas canvasオブジェクト
+ * @param text 行に含めたいstring
+ * @return 行数と余った文字列があれば返す
  */
 type SeparatedText = {
     line: string
@@ -43,10 +46,14 @@ const createTextLines = (canvas: Canvas, text: string): string[] => {
     return lines
 }
 
-/*
- *
+/**
+ * Githubアイコンを作る
+ * @param githubName Githubのアカウント名
+ * @return Githubアイコンを描画したcanvas
  */
-const createGithubICon: () => Promise<Canvas> = async () => {
+const createGithubICon: (githubName: string) => Promise<Canvas> = async (
+    githubName
+) => {
     const THUMBNAIL_WIDTH = 150 as const
     const THUMBNAIL_HEIGHT = 150 as const
 
@@ -64,19 +71,21 @@ const createGithubICon: () => Promise<Canvas> = async () => {
     // ctx.stroke()
     ctx.clip()
 
-    const backgroundImage = await loadImage('https://github.com/yt-ymmt.png')
+    const backgroundImage = await loadImage(
+        `https://github.com/${githubName}.png`
+    )
     ctx.drawImage(backgroundImage, 0, 0, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
     return canvas
 }
 
-/*
- *
+/**
+ * OGP用の画像を生成するAPI
  */
 const ogp = async (
     req: NextApiRequest,
     res: NextApiResponse
 ): Promise<void> => {
-    const { dynamic } = req.query
+    const { title, githubName } = req.query
 
     const WIDTH = 1200 as const
     const HEIGHT = 675 as const
@@ -128,7 +137,7 @@ const ogp = async (
     ctx.fill()
 
     // Github Icon
-    const icon = await createGithubICon()
+    const icon = await createGithubICon(githubName as string)
     ctx.drawImage(
         icon,
         BASE_SPACING,
@@ -148,9 +157,9 @@ const ogp = async (
 
     // Text
     ctx.font = '64px NotoSansJP'
-    const title = String(dynamic)
+    const text = String(title)
 
-    const lines = createTextLines(canvas, title)
+    const lines = createTextLines(canvas, text)
     lines.forEach((line, index) => {
         const y = BASE_SPACING + 32 + 88 * (index - (lines.length - 1) / 2)
         ctx.fillText(line, BASE_SPACING, y)
