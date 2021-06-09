@@ -13,6 +13,10 @@ module.exports = {
             fs: false,
             path: false,
         }
+        config.module.rules.push({
+            test: /\.otf$/,
+            type: "asset/inline"
+        });
         return config;
     },
 };

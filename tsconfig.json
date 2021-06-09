@@ -2,8 +2,8 @@
     "compilerOptions": {
         "target": "es2015",
         "module": "esnext",
-        "lib": ["es6", "dom", "dom.iterable", "esnext"],
-        "allowJs": true,
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": false,
         "skipLibCheck": true,
         "strict": true,
         "forceConsistentCasingInFileNames": true,
