@@ -80,6 +80,8 @@ const createGithubICon: (githubName: string) => Promise<Canvas> = async (
 
 /**
  * OGP用の画像を生成するAPI
+ * @param title タイトルのテキスト。クエリパラメータで渡す
+ * @param githubName Githubのアカウント。アイコンを表示
  */
 const ogp = async (
     req: NextApiRequest,
