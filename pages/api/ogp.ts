@@ -113,10 +113,6 @@ const ogp = async (
         family: 'NotoSansJP',
     })
 
-    // registerFont(path.resolve('./public/fonts/NotoSansJP-Bold.otf'), {
-    //     family: 'NotoSansJP',
-    // })
-
     // Background color
     ctx.fillStyle = '#23221f'
     ctx.fillRect(DX, DY, WIDTH, HEIGHT)
