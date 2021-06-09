@@ -2,7 +2,7 @@ name: Deploy
 on:
     push:
         branches:
-            - master
+            - main
 jobs:
     deploy:
         runs-on: ubuntu-latest
@@ -23,7 +23,7 @@ jobs:
               uses: amondnet/vercel-action@v20.0.0
               with:
                   vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
-                  github-token: ${{ secrets.GIT_TOKEN }} #Optional
+                  github-token: ${{ secrets.VERCEL_GITHUB_TOKEN }} #Optional
                   vercel-args: '--prod -f -b TZ=Asia/Tokyo' #Optional
                   vercel-org-id: ${{ secrets.ORG_ID }} #Required
                   vercel-project-id: ${{ secrets.PROJECT_ID }} #Required
