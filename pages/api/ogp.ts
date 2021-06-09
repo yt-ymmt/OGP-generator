@@ -1,6 +1,15 @@
 import { Canvas, createCanvas, loadImage, registerFont } from 'canvas'
 import { NextApiRequest, NextApiResponse } from 'next'
 import path from 'path'
+import { mkdtempSync, writeFileSync } from 'fs'
+import { tmpdir } from 'os'
+import fontDataURI from '../../public/fonts/NotoSansJP-Bold.otf'
+import dataUriToBuffer from 'data-uri-to-buffer'
+
+const fontBuf = dataUriToBuffer(fontDataURI)
+const td = mkdtempSync(path.join(tmpdir(), 'OGP-generator'))
+const fontFile = path.join(td, 'NotoSansJP-Bold.otf')
+writeFileSync(fontFile, fontBuf)
 
 /**
  * タイトルテキストの行数調整
@@ -99,9 +108,14 @@ const ogp = async (
 
     const canvas = createCanvas(WIDTH, HEIGHT)
     const ctx = canvas.getContext('2d')
-    registerFont(path.resolve('./src/fonts/NotoSansJP-Bold.otf'), {
+
+    registerFont(fontFile, {
         family: 'NotoSansJP',
     })
+
+    // registerFont(path.resolve('./public/fonts/NotoSansJP-Bold.otf'), {
+    //     family: 'NotoSansJP',
+    // })
 
     // Background color
     ctx.fillStyle = '#23221f'
@@ -152,7 +166,7 @@ const ogp = async (
     ctx.fillStyle = '#23221f'
     ctx.font = '48px NotoSansJP'
     ctx.fillText(
-        'yt-ymmt',
+        githubName as string,
         THUMBNAIL_WIDTH + BASE_SPACING * 1.5,
         HEIGHT - THUMBNAIL_HEIGHT - BASE_SPACING / 2
     )
@@ -163,7 +177,7 @@ const ogp = async (
 
     const lines = createTextLines(canvas, text)
     lines.forEach((line, index) => {
-        const y = BASE_SPACING + 32 + 88 * (index - (lines.length - 1) / 2)
+        const y = BASE_SPACING + index * 64 * 1.2
         ctx.fillText(line, BASE_SPACING, y)
     })
 
