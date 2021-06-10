@@ -99,7 +99,7 @@ const ogp = async (
     const { title, githubName } = req.query
 
     const WIDTH = 1200 as const
-    const HEIGHT = 675 as const
+    const HEIGHT = 628 as const
     const DX = 0 as const
     const DY = 0 as const
     const THUMBNAIL_WIDTH = 150 as const
